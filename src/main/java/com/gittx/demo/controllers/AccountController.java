@@ -1,13 +1,12 @@
 package com.gittx.demo.controllers;
 
 import com.gittx.demo.data_objects.AccountsDto;
+import com.gittx.demo.exception_handlers.CustomException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -15,9 +14,16 @@ public class AccountController {
 
     private static Logger logger = LogManager.getLogger();
 
+    private static Map<Long, AccountsDto> accountRepo = new HashMap<>();
+
+    static {   //before we spin a database
+        AccountsDto ac1 = new AccountsDto("premium", 1, "active", "yaya", new Date());
+        accountRepo.put(ac1.getId(), ac1);
+    }
+
     @GetMapping(value = "/hello")
-    public @ResponseBody String sayHi()
-    {
+    public @ResponseBody
+    String sayHi() {
         logger.debug("This is a debug message");
         logger.info("This is an info message");
         logger.warn("This is a warn message");
@@ -26,9 +32,9 @@ public class AccountController {
         return "Test";
     }
 
-    @GetMapping(value = "/accounts")
-    public @ResponseBody List<AccountsDto> getAll()
-    {
+    @GetMapping(value = "/fetch/accounts")
+    public @ResponseBody
+    List<AccountsDto> getAll() {
         logger.info("This is a GET Request to fetch all accounts ");
         AtomicLong id = new AtomicLong();
 
@@ -39,22 +45,42 @@ public class AccountController {
         return accountsList;
     }
 
-    @GetMapping(value = "/accounts/{id}")
-    public @ResponseBody AccountsDto getOneAccount(@PathVariable int id)
-    {
+    @GetMapping(value = "/fetch/account/{id}")
+    public @ResponseBody
+    AccountsDto getOneAccount(@PathVariable("id") Long id) {
         logger.info("This is a GET Request to fetch one accounts ");
 
-        return new AccountsDto("premium",id,"active","yaya",new Date());
+        return new AccountsDto("premium", id, "active", "yaya", new Date());
+
     }
 
-    @PostMapping(value = "/account")
-    public @ResponseBody AccountsDto createAccount(@RequestBody AccountsDto account)
-    {
+    @PostMapping(value = "/create/account")
+    public @ResponseBody
+    AccountsDto createAccount(@RequestBody AccountsDto account) {
         logger.info("This is a POST Request to CREATE an account ");
-        logger.info("Account branch received:- "+ account.getBranch());
+        logger.info("Account branch received:- " + account.getBranch());
         logger.info("Account Object received {}", account);
-
         return account;
+    }
+
+    @PutMapping(value = "/update/account/{id}")
+    public @ResponseBody
+    AccountsDto updateAccount(@RequestBody AccountsDto account, @PathVariable("id") Long id) {
+        logger.info("This is a PUT Request to UPDATE an account ");
+
+//        accountRepo.entrySet().stream()
+//                .filter(f->f.getKey() == id)
+//                .forEach(f->account.setId(id));
+
+        if (accountRepo.containsKey(id)) {
+            logger.warn("Key FOUND : All good!!!");
+            account.setId(id);
+            return account;
+        }
+
+            logger.warn("Key NOT FOUND : Exception");
+            throw new CustomException("Account Not Found");
+
     }
 
 
