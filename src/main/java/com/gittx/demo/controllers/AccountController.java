@@ -15,13 +15,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AccountController {
 
     private static Logger logger = LogManager.getLogger();
-
-    private static Map<Long, AccountsDto> accountRepo = new HashMap<>();
-
-    static {   //before we spin a database
-        AccountsDto ac1 = new AccountsDto("premium", 1, "active", "yaya", new Date());
-        accountRepo.put(ac1.getId(), ac1);
-    }
+    private Map<Integer, AccountsDto> accountRepo = new HashMap<>();
+    List<Integer> listOfIds = new ArrayList<>();
 
     @GetMapping(value = "/hello")
     public @ResponseBody
@@ -36,23 +31,22 @@ public class AccountController {
 
     @GetMapping(value = "/fetch/accounts")
     public @ResponseBody
-    List<AccountsDto> getAll() {
+    Map getAll() {
         logger.info("This is a GET Request to fetch all accounts ");
-        AtomicLong id = new AtomicLong();
-
-        List<AccountsDto> accountsList = new ArrayList<>();
-        for (long x = 0; x < 5; x++) {
-            accountsList.add(new AccountsDto("premium", x, "active", "yaya", new Date()));
-        }
-        return accountsList;
+        return accountRepo;
     }
 
     @GetMapping(value = "/fetch/account/{id}")
     public @ResponseBody
-    AccountsDto getOneAccount(@PathVariable("id") Long id) {
+    AccountsDto getOneAccount(@PathVariable("id") Integer id) {
         logger.info("This is a GET Request to fetch one accounts ");
 
-        return new AccountsDto("premium", id, "active", "yaya", new Date());
+        if (!accountRepo.containsKey(id)) {
+            logger.warn("Key NOT FOUND :- ", id);
+            throw new CustomException("Account Not Found", 5001);
+        }
+
+        return accountRepo.get(id);
 
     }
 
@@ -61,13 +55,19 @@ public class AccountController {
     AccountsDto createAccount(@RequestBody AccountsDto account) {
         logger.info("This is a POST Request to CREATE an account ");
         logger.info("Account branch received:- " + account.getBranch());
-        logger.info("Account Object received {}", account);
+        logger.info("Account Object received (to be created) {}", account);
+
+        //create
+        accountRepo.put(new Random().nextInt(1000), account);
+        logger.info("Account Repo {} :- ", accountRepo);
+        logger.info("\nSize of Map {} ", accountRepo.size());
+
         return account;
     }
 
     @PutMapping(value = "/update/account/{id}")
     public @ResponseBody
-    AccountsDto updateAccount(@RequestBody AccountsDto account, @PathVariable("id") Long id)
+    AccountsDto updateAccount(@RequestBody AccountsDto account, @PathVariable("id") Integer id)
             throws CustomException {
         logger.info("This is a PUT Request to UPDATE an account ");
 
@@ -81,8 +81,27 @@ public class AccountController {
         }
 
         logger.info("Key FOUND : All good!!!");
-        account.setId(id);
+        accountRepo.put(id, account);
         return account;
+
+    }
+
+    @DeleteMapping(value = "/delete/account/{id}")
+    public @ResponseBody
+    Map deleteOneAccount(@PathVariable("id") Integer id) {
+        logger.info("This is a GET Request to fetch one accounts ");
+
+        if (!accountRepo.containsKey(id)) {
+            logger.warn("Key NOT FOUND :- ", id);
+            throw new CustomException("Account Not Found", 5001);
+        }
+
+        logger.info("Deleted account ID {}", id);
+        accountRepo.remove(id);
+        logger.info("New Repo :- \n", accountRepo);
+        logger.info("\nSize of Map {} ", accountRepo.size());
+
+        return accountRepo;
 
     }
 

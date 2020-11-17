@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 public class AccountsDto {
     private String name;
-    private long   id;
+    private Integer   id;
     private String status;
     private String branch;
     private Date dateCreated;
