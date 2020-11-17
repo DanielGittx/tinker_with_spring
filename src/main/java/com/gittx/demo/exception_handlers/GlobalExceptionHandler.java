@@ -6,8 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 //@Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
@@ -38,6 +40,7 @@ public class GlobalExceptionHandler {
         ExceptionResponseDto response=new ExceptionResponseDto();
         response.setMessage("BAD_REQUEST");
         response.setExceptionMessage(ex.getMessage());
+        response.setInternalCode(ex.getCode());
         response.setTimestamp(LocalDateTime.now());
 
         return new ResponseEntity<ExceptionResponseDto>(response, HttpStatus.BAD_REQUEST);
@@ -51,6 +54,15 @@ public class GlobalExceptionHandler {
         response.setTimestamp(LocalDateTime.now());
 
         return new ResponseEntity<ExceptionResponseDto>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<ExceptionResponseDto> handleAllExceptions(Exception ex, WebRequest request) {
+        ExceptionResponseDto response = new ExceptionResponseDto();
+        response.setMessage("INTERNAL_SERVER_ERROR");
+        response.setExceptionMessage(ex.getMessage());
+        response.setTimestamp(LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

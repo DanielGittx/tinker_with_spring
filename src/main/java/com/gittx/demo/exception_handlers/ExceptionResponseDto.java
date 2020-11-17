@@ -15,7 +15,7 @@ public class ExceptionResponseDto {
 
     private String message;
     private String exceptionMessage;
-    private String code;
+    private Integer internalCode;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
 }

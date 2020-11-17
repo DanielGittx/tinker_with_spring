@@ -4,8 +4,10 @@ import com.gittx.demo.data_objects.AccountsDto;
 import com.gittx.demo.exception_handlers.CustomException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -65,21 +67,21 @@ public class AccountController {
 
     @PutMapping(value = "/update/account/{id}")
     public @ResponseBody
-    AccountsDto updateAccount(@RequestBody AccountsDto account, @PathVariable("id") Long id) {
+    AccountsDto updateAccount(@RequestBody AccountsDto account, @PathVariable("id") Long id, HttpServletRequest request) throws CustomException {
         logger.info("This is a PUT Request to UPDATE an account ");
 
 //        accountRepo.entrySet().stream()
-//                .filter(f->f.getKey() == id)
-//                .forEach(f->account.setId(id));  //test
+//                .filter(p->p.getKey() == id)
+//                .forEach(p->account.setId(id));  //test
 
-        if (accountRepo.containsKey(id)) {
-            logger.warn("Key FOUND : All good!!!");
-            account.setId(id);
-            return account;
+        if (!accountRepo.containsKey(id)) {
+            logger.warn("Key NOT FOUND :- ", id);
+            throw new CustomException("Account Not Found", 5001);
         }
 
-            logger.warn("Key NOT FOUND : Exception");
-            throw new CustomException("Account Not Found");
+        logger.warn("Key FOUND : All good!!!");
+        account.setId(id);
+        return account;
 
     }
 
