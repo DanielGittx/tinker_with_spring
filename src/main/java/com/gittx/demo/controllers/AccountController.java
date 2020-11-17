@@ -67,7 +67,8 @@ public class AccountController {
 
     @PutMapping(value = "/update/account/{id}")
     public @ResponseBody
-    AccountsDto updateAccount(@RequestBody AccountsDto account, @PathVariable("id") Long id, HttpServletRequest request) throws CustomException {
+    AccountsDto updateAccount(@RequestBody AccountsDto account, @PathVariable("id") Long id)
+            throws CustomException {
         logger.info("This is a PUT Request to UPDATE an account ");
 
 //        accountRepo.entrySet().stream()
@@ -79,7 +80,7 @@ public class AccountController {
             throw new CustomException("Account Not Found", 5001);
         }
 
-        logger.warn("Key FOUND : All good!!!");
+        logger.info("Key FOUND : All good!!!");
         account.setId(id);
         return account;
 
