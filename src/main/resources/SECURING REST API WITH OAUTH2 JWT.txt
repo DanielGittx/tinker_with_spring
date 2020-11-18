@@ -1,0 +1,29 @@
+SECURING REST API WITH OAUTH2 
+https://www.freecodecamp.org/news/how-to-setup-jwt-authorization-and-authentication-in-spring/
+https://www.baeldung.com/rest-api-spring-oauth2-angular
+
+1. Authorization Server
+- An Authorization Server is an application that issues tokens for authorization.
+- Eg. Okta, Keycloak, and ForgeRock
+- This Example uses Keycloak
+
+2. Resource Server
+
+
+3. UI authorization code: a front-end application using the Authorization Code Flow
+
+
+
+
+/datascience/special_projects/customer_obsession/caller_reasons_base_table
+
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/BONGA_POINTS/final_uncoalesced
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/FCT_FIN_BLNC_MVMN_RECHARGES/final_uncoalesced
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/FCT_SBSC_HSTR_DAY_ETU_BLACKLIST/final_uncoalesced
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/HELPLINE_CALLS/final_uncoalesced
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPESA_DAILY_BALANCES/final_uncoalesced
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPESA_DR_CUSTOMERS_UNQ_CR/final_uncoalesced
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPESA_SUCCESS_CR_PARTY/final_uncoalesced
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPESA_SUCCESS_DR_PARTY/final_uncoalesced
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPSA_CR_CUSTOMERS_UNQ_DR/final_uncoalesced
+/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/X_AGG00_REVN_DAILY_SUMMARY/final_uncoalesced

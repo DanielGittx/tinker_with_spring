@@ -1,6 +1,7 @@
 package com.gittx.demo.configurations;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -22,4 +23,6 @@ public class ExceptionHandlingConfig {
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
     }
 
+//    @Bean
+//    public BCryptPasswordEncoder bCryptPasswordEncoder() {    return new BCryptPasswordEncoder(); }
 }
