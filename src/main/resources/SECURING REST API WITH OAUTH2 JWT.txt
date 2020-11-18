@@ -14,16 +14,34 @@ https://www.baeldung.com/rest-api-spring-oauth2-angular
 
 
 
+@Override
+	protected void configure(HttpSecurity http) throws Exception {
 
-/datascience/special_projects/customer_obsession/caller_reasons_base_table
+		http	.authorizeRequests()
+		
+		.antMatchers("/v1/{channel}/customers/questions").permitAll()
+	
 
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/BONGA_POINTS/final_uncoalesced
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/FCT_FIN_BLNC_MVMN_RECHARGES/final_uncoalesced
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/FCT_SBSC_HSTR_DAY_ETU_BLACKLIST/final_uncoalesced
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/HELPLINE_CALLS/final_uncoalesced
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPESA_DAILY_BALANCES/final_uncoalesced
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPESA_DR_CUSTOMERS_UNQ_CR/final_uncoalesced
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPESA_SUCCESS_CR_PARTY/final_uncoalesced
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPESA_SUCCESS_DR_PARTY/final_uncoalesced
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/MPSA_CR_CUSTOMERS_UNQ_DR/final_uncoalesced
-/datascience/special_projects/customer_obsession_active_not_contacted/#SCOREDATE/X_AGG00_REVN_DAILY_SUMMARY/final_uncoalesced
+				.anyRequest()
+				.authenticated()
+				.and()
+				.authenticationProvider(getProvider())
+				.addFilterBefore(preAuthenticationFilter(), BasicAuthenticationFilter.class)
+				.httpBasic()
+				.and()
+				.authenticationProvider(getJwtProvider())
+				.addFilterBefore(preJwtAuthenticationFilter(), CellulantAuthenticationFilter.class)
+				.httpBasic()
+		        .and()
+		        .headers().disable()
+				.csrf().disable()
+				.formLogin().disable()
+				.logout().disable() 
+				.sessionManagement().disable()
+				.exceptionHandling().authenticationEntryPoint(getEntryPoint())
+				;
+
+	}
+
+
+    

@@ -11,4 +11,7 @@ public class DemoApplication {
 
 	}
 
+//	@Bean
+//	public BCryptPasswordEncoder bCryptPasswordEncoder() {    return new BCryptPasswordEncoder(); }
+
 }

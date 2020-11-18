@@ -23,7 +23,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    @PostMapping(value = "/create/user")
+    @PostMapping(value = "create/user")
     @Transactional(rollbackFor = Exception.class)   //Roll back incase an Exception occurs
     public @ResponseBody
     User createUser(@RequestBody User user) {
