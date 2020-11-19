@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class JwtRequest implements Serializable{
+public class LoginRequest implements Serializable{
 
     private static final long serialVersionUID = 5926468583005150707L;
 

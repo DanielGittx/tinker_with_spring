@@ -6,6 +6,7 @@ import com.gittx.demo.repositories.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,9 @@ public class UserController {
     private static Logger logger = LogManager.getLogger();
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @GetMapping(value = "/fetch/users")
     public @ResponseBody
@@ -30,6 +34,12 @@ public class UserController {
         logger.info("This is a POST Request to CREATE an User ");
         logger.info("User Object received (to be created) {}", user);
 
+        //Basic encode todo:- Salting?
+        String pass = passwordEncoder.encode(user.getPassword());
+
+        logger.info("ENCODED pass {} ", pass);
+        user.setPassword(pass);
+
         //create
         return userRepository.save(user);
     }
@@ -38,7 +48,7 @@ public class UserController {
     public @ResponseBody
     User getUserByName(@PathVariable("name") String name) {
         logger.info("This is a GET Request to fetch User by name ");
-        return userRepository.findByName(name).orElseThrow(()->new CustomException("User Not Found", 5003));
+        return userRepository.findByUsername(name).orElseThrow(()->new CustomException("User Not Found", 5003));
 
     }
 

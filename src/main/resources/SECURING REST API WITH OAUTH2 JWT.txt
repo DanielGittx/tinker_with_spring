@@ -1,6 +1,8 @@
 SECURING REST API WITH OAUTH2 
 https://www.freecodecamp.org/news/how-to-setup-jwt-authorization-and-authentication-in-spring/
 https://www.baeldung.com/rest-api-spring-oauth2-angular
+https://bezkoder.com/spring-boot-jwt-authentication/
+https://github.com/bezkoder/spring-boot-spring-security-jwt-authentication/blob/master/src/main/java/com/bezkoder/springjwt/payload/response/JwtResponse.java
 
 1. Authorization Server
 - An Authorization Server is an application that issues tokens for authorization.
@@ -13,35 +15,6 @@ https://www.baeldung.com/rest-api-spring-oauth2-angular
 3. UI authorization code: a front-end application using the Authorization Code Flow
 
 
-
-@Override
-	protected void configure(HttpSecurity http) throws Exception {
-
-		http	.authorizeRequests()
-		
-		.antMatchers("/v1/{channel}/customers/questions").permitAll()
-	
-
-				.anyRequest()
-				.authenticated()
-				.and()
-				.authenticationProvider(getProvider())
-				.addFilterBefore(preAuthenticationFilter(), BasicAuthenticationFilter.class)
-				.httpBasic()
-				.and()
-				.authenticationProvider(getJwtProvider())
-				.addFilterBefore(preJwtAuthenticationFilter(), CellulantAuthenticationFilter.class)
-				.httpBasic()
-		        .and()
-		        .headers().disable()
-				.csrf().disable()
-				.formLogin().disable()
-				.logout().disable() 
-				.sessionManagement().disable()
-				.exceptionHandling().authenticationEntryPoint(getEntryPoint())
-				;
-
-	}
-
-
-    
+RUN SPRING BOOT APP (Build, create repos and start server)
+------------------------------------------------------------
+mvn spring-boot:run
