@@ -2,6 +2,7 @@ package com.gittx.demo.configurations;
 
 import com.gittx.demo.security.AuthEntryPointJwt;
 import com.gittx.demo.security.AuthTokenFilter;
+import com.gittx.demo.security.CustomAuthenticationFailureHandler;
 import com.gittx.demo.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
@@ -52,6 +54,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
@@ -63,8 +67,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/accounts/**").hasRole("ADMIN")
                 .antMatchers("/api/accounts/**").hasRole("MODERATOR")
                 .antMatchers("/api/accounts/**").hasRole("USER")
-                .anyRequest().authenticated();
-
+                .anyRequest()
+                .authenticated()
+                //Tring to Handle Auth Errors at Auth Entry Point
+//                .and()
+//                .formLogin()
+//                .failureHandler(authenticationFailureHandler())
+               ;
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+    //Tring to Handle Auth Errors at Auth Entry POint (Did not work)
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
+
 }

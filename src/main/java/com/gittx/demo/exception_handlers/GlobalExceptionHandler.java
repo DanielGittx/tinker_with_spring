@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
         response.setExceptionMessage(ex.getMessage());
         response.setTimestamp(LocalDateTime.now());
 
-        return new ResponseEntity<ExceptionResponseDto>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
@@ -36,7 +37,7 @@ public class GlobalExceptionHandler {
         response.setExceptionMessage("NOT_FOUND");
         response.setInternalCode(5555);
         response.setTimestamp(LocalDateTime.now());
-        return new ResponseEntity<ExceptionResponseDto>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ResourceAlreadyExists.class)
@@ -46,7 +47,7 @@ public class GlobalExceptionHandler {
         response.setExceptionMessage(ex.getMessage());
         response.setTimestamp(LocalDateTime.now());
 
-        return new ResponseEntity<ExceptionResponseDto>(response, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(CustomException.class)
@@ -57,7 +58,7 @@ public class GlobalExceptionHandler {
         response.setInternalCode(ex.getCode());
         response.setTimestamp(LocalDateTime.now());
 
-        return new ResponseEntity<ExceptionResponseDto>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
@@ -67,7 +68,7 @@ public class GlobalExceptionHandler {
         response.setExceptionMessage(ex.getMessage());
         response.setTimestamp(LocalDateTime.now());
 
-        return new ResponseEntity<ExceptionResponseDto>(response, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
