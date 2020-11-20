@@ -1,18 +1,26 @@
 SECURING REST API WITH OAUTH2 
-https://www.freecodecamp.org/news/how-to-setup-jwt-authorization-and-authentication-in-spring/
 https://www.baeldung.com/rest-api-spring-oauth2-angular
-https://bezkoder.com/spring-boot-jwt-authentication/
-https://github.com/bezkoder/spring-boot-spring-security-jwt-authentication/blob/master/src/main/java/com/bezkoder/springjwt/payload/response/JwtResponse.java
+
 
 1. Authorization Server
 - An Authorization Server is an application that issues tokens for authorization.
 - Eg. Okta, Keycloak, and ForgeRock
 - This Example uses Keycloak
-
 2. Resource Server
-
-
 3. UI authorization code: a front-end application using the Authorization Code Flow
+
+
+Sprint security JWT With User Roles
+
+https://www.freecodecamp.org/news/how-to-setup-jwt-authorization-and-authentication-in-spring/
+https://bezkoder.com/spring-boot-jwt-authentication/
+https://github.com/bezkoder/spring-boot-spring-security-jwt-authentication/blob/master/src/main/java/com/bezkoder/springjwt/payload/response/JwtResponse.java
+
+NB:- Roles should start with "ROLES_XXXXXX" IN Spring security and expressed on antMatchers as "XXXXXX"
+E.g 
+     -  In database :- ROLE_MODERATOR  
+     -  Expressed as:- .antMatchers("/fetch/**").hasRole("MODERATOR")  in WebSecurityConfig implementation
+
 
 
 RUN SPRING BOOT APP (Build, create repos and start server)

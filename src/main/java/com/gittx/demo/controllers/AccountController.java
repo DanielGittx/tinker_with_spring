@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@RequestMapping("/api/accounts")
 public class AccountController {
 
     private static Logger logger = LogManager.getLogger();
@@ -26,14 +27,14 @@ public class AccountController {
         return "Test";
     }
 
-    @GetMapping(value = "/fetch/accounts")
+    @GetMapping(value = "/fetch")
     public @ResponseBody
     Map getAll() {
         logger.info("This is a GET Request to fetch all accounts ");
         return accountRepo;
     }
 
-    @GetMapping(value = "/fetch/account/{id}")
+    @GetMapping(value = "/fetch/{id}")
     public @ResponseBody
     AccountsDto getOneAccount(@PathVariable("id") Integer id) {
         logger.info("This is a GET Request to fetch one accounts ");
@@ -47,7 +48,7 @@ public class AccountController {
 
     }
 
-    @PostMapping(value = "/create/account")
+    @PostMapping(value = "/create")
     public @ResponseBody
     AccountsDto createAccount(@RequestBody AccountsDto account) {
         logger.info("This is a POST Request to CREATE an account ");
@@ -62,7 +63,7 @@ public class AccountController {
         return account;
     }
 
-    @PutMapping(value = "/update/account/{id}")
+    @PutMapping(value = "/update/{id}")
     public @ResponseBody
     AccountsDto updateAccount(@RequestBody AccountsDto account, @PathVariable("id") Integer id)
             throws CustomException {
@@ -83,7 +84,7 @@ public class AccountController {
 
     }
 
-    @DeleteMapping(value = "/delete/account/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public @ResponseBody
     Map deleteOneAccount(@PathVariable("id") Integer id) {
         logger.info("This is a GET Request to fetch one accounts ");
