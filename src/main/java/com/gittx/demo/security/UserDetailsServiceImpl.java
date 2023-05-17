@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gittx.demo.repositories.UserRepository;
 import com.gittx.demo.entities.User;
 
-
-
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired

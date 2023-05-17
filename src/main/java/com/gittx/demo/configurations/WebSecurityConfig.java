@@ -19,13 +19,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-        // securedEnabled = true,
-        // jsr250Enabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true,
         prePostEnabled = true)
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -64,11 +64,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 // The order of the rules matters and the more specific rules should go first
-                .antMatchers("/api/accounts/**").hasRole("ADMIN")
+                .antMatchers("/v1/apply/**").hasRole("ADMIN")
                 .antMatchers("/api/accounts/**").hasRole("MODERATOR")
-                .antMatchers("/api/accounts/**").hasRole("USER")
+                .antMatchers("/v1/apply/**").hasRole("USER")
                 .anyRequest()
                 .authenticated()
+        .and()
+        .httpBasic()
                 //Tring to Handle Auth Errors at Auth Entry Point
 //                .and()
 //                .formLogin()

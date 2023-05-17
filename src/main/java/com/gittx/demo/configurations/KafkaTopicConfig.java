@@ -10,20 +10,20 @@ import org.springframework.kafka.core.KafkaAdmin;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
+//@Configuration
 public class KafkaTopicConfig {
 
-    @Value(value = "${kafka.bootstrapAddress}")
+   // @Value(value = "${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
-    @Bean
+   // @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         return new KafkaAdmin(configs);
     }
 
-    @Bean
+   // @Bean
     public NewTopic topic1() {
         return new NewTopic("gittx_topic", 1, (short) 1);
     }
