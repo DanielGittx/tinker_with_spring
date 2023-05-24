@@ -6,10 +6,13 @@ import com.gittx.demo.entities.Kyc;
 import com.gittx.demo.entities.Stat;
 import com.gittx.demo.exception_handlers.CustomException;
 import com.gittx.demo.repositories.ApplicationRepository;
+import com.gittx.demo.services.FileStorageService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.*;
 
 @RestController
@@ -17,11 +20,11 @@ import java.util.*;
 public class ApplicationController {
 
     private static Logger logger = LogManager.getLogger();
-    private Map<Integer, AccountsDto> accountRepo = new HashMap<>();
-    List<Integer> listOfIds = new ArrayList<>();
 
     @Autowired
     ApplicationRepository applicationRepository;
+    @Autowired
+    FileStorageService fileStorageService;
 
     @PostMapping(value = "/apply")
     public @ResponseBody
@@ -33,76 +36,17 @@ public class ApplicationController {
         return application;
     }
 
-    @GetMapping(value = "/hello")
-    public @ResponseBody
-    String sayHi() {
-        logger.debug("This is a debug message");
-        logger.info("This is an info message");
-        logger.warn("This is a warn message");
-        logger.error("This is an error message");
-        logger.fatal("This is a fatal message");
-        return "Test";
+    @PostMapping(value = "/kyc/upload")
+    public @ResponseBody HashMap<String,String> uploadKyc (@RequestParam("file") MultipartFile file) throws Exception {
+        System.out.println("Upload file ....");
+        String fileLocation = fileStorageService.storeFile(file);
+        System.out.println("File uploaded successfully ....");
+        HashMap<String,String> map=new HashMap<String,String>();//Creating HashMap.
+        map.put("location",fileLocation);
+
+
+        return map;
     }
 
-    @GetMapping(value = "/fetch")
-    public @ResponseBody
-    Map getAll() {
-        logger.info("This is a GET Request to fetch all accounts ");
-        return accountRepo;
-    }
-
-    @GetMapping(value = "/fetch/{id}")
-    public @ResponseBody
-    AccountsDto getOneAccount(@PathVariable("id") Integer id) {
-        logger.info("This is a GET Request to fetch one accounts ");
-
-        if (!accountRepo.containsKey(id)) {
-            logger.warn("Key NOT FOUND :- ", id);
-            throw new CustomException("Account Not Found", 5001);
-        }
-
-        return accountRepo.get(id);
-
-    }
-
-    @PutMapping(value = "/update/{id}")
-    public @ResponseBody
-    AccountsDto updateAccount(@RequestBody AccountsDto account, @PathVariable("id") Integer id)
-            throws CustomException {
-        logger.info("This is a PUT Request to UPDATE an account ");
-
-//        accountRepo.entrySet().stream()
-//                .filter(p->p.getKey() == id)
-//                .forEach(p->account.setId(id));  //test
-
-        if (!accountRepo.containsKey(id)) {
-            logger.warn("Key NOT FOUND :- ", id);
-            throw new CustomException("Account Not Found", 5001);
-        }
-
-        logger.info("Key FOUND : All good!!!");
-        accountRepo.put(id, account);
-        return account;
-
-    }
-
-    @DeleteMapping(value = "/delete/{id}")
-    public @ResponseBody
-    Map deleteOneAccount(@PathVariable("id") Integer id) {
-        logger.info("This is a GET Request to fetch one accounts ");
-
-        if (!accountRepo.containsKey(id)) {
-            logger.warn("Key NOT FOUND :- ", id);
-            throw new CustomException("Account Not Found", 5001);
-        }
-
-        logger.info("Deleted account ID {}", id);
-        accountRepo.remove(id);
-        logger.info("New Repo :- \n", accountRepo);
-        logger.info("\nSize of Map {} ", accountRepo.size());
-
-        return accountRepo;
-
-    }
 
 }
