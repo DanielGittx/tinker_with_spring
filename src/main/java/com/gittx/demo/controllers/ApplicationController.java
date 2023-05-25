@@ -37,9 +37,9 @@ public class ApplicationController {
     }
 
     @PostMapping(value = "/kyc/upload")
-    public @ResponseBody HashMap<String,String> uploadKyc (@RequestParam("file") MultipartFile file) throws Exception {
+    public @ResponseBody HashMap<String,String> uploadKyc (@RequestParam("file") MultipartFile [] files) throws Exception {
         System.out.println("Upload file ....");
-        String fileLocation = fileStorageService.storeFile(file);
+        String fileLocation = fileStorageService.storeFile(files);
         System.out.println("File uploaded successfully ....");
         HashMap<String,String> map=new HashMap<String,String>();//Creating HashMap.
         map.put("location",fileLocation);
